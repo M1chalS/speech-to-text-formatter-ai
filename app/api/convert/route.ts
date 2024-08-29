@@ -7,7 +7,7 @@ const client = new speech.SpeechClient({
     projectId: process.env.GCP_PROJECT_ID,
     credentials: {
         client_email: process.env.GCP_CLIENT_EMAIL,
-        private_key: process.env.GCP_PRIVATE_KEY!.split(String.raw`\n`).join('\n'),
+        private_key: process.env.GCP_PRIVATE_KEY!.split('\\n').map(i => i + "\n").join(""),
     },
 });
 
