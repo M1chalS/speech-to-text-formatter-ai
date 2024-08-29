@@ -1,8 +1,11 @@
 'use client';
 import { ChangeEvent, FormEvent, useState } from "react";
+import toWav from "audiobuffer-to-wav";
 
-export default function FileInput() {
+export default ({onTranscription}: { onTranscription: (data: string) => void }) => {
     const [ file, setFile ] = useState<File | null>(null);
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ visible, setVisible ] = useState<boolean>(true);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if ( e.target.files ) {
@@ -12,22 +15,30 @@ export default function FileInput() {
 
     const handleConvert = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
+
+        const audioContext = new AudioContext();
+        const buf = await file?.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(buf as ArrayBuffer);
+        const wav = toWav(audioBuffer);
 
         const response = await fetch("/api/convert", {
             method: "POST",
-            body: file,
+            body: wav,
             headers: {
                 "Content-Type": "file/*",
             },
         });
 
+        setLoading(false);
+        setVisible(false);
         const data = await response.json();
 
-        console.log(data);
+        onTranscription(data.result);
     };
 
     return <div className="max-w-sm z-10">
-        <form onSubmit={handleConvert} className="flex flex-col items-center">
+        {visible && <form onSubmit={handleConvert} className="flex flex-col items-center">
             <label className="block">
                 <span className="sr-only">Wybierz plik dźwiękowy</span>
                 <input type="file" onChange={handleFileChange} className="block w-full text-sm text-gray-500 pointer-events-auto
@@ -42,9 +53,9 @@ export default function FileInput() {
                             dark:hover:file:bg-blue-400
                           "/>
             </label>
-            <button type="submit" className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white">
+            <button type="submit" disabled={loading} className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white">
                 Rozpocznij konwersję
             </button>
-        </form>
+        </form>}
     </div>;
 }
