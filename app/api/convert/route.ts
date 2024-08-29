@@ -30,19 +30,25 @@ export async function POST(req: NextRequest) {
         config: config,
     }
 
-    const [response] = await client.recognize(request);
+    try {
+        const [response] = await client.recognize(request);
 
-    if(!response?.results || response?.results?.length === 0) {
-        return new NextResponse(JSON.stringify({message: "No results found!"}), {
-            status: 400,
+        if(!response?.results || response?.results?.length === 0) {
+            return new NextResponse(JSON.stringify({message: "No results found!"}), {
+                status: 400,
+            });
+        }
+
+        const transcription = response.results
+          .map(result => result.alternatives![0].transcript)
+          .join('\n');
+
+        return new NextResponse(JSON.stringify({result: transcription}), {
+            status: 200,
+        });
+    } catch (e) {
+        return new NextResponse(JSON.stringify({message: e}), {
+            status: 500,
         });
     }
-
-    const transcription = response.results
-      .map(result => result.alternatives![0].transcript)
-      .join('\n');
-
-    return new NextResponse(JSON.stringify({result: transcription}), {
-        status: 200,
-    });
 }
