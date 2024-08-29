@@ -30,9 +30,10 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
             },
         });
 
+        const data = await response.json();
+
         setLoading(false);
         setVisible(false);
-        const data = await response.json();
 
         onTranscription(data.result);
     };
