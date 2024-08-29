@@ -23,10 +23,20 @@ export default () => {
         setGeneratedOutput(data.result);
     };
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(generatedOutput);
+    }
+
     return <>
         {(!generatedOutput && !loading) && <Converter onFormat={startFormatting}/>}
-            {generatedOutput && <div>
+        {generatedOutput && <div className="container">
+            <div className="flex flex-row justify-between items-center mb-4">
+                <h2 className="text-2xl mb-4">Wynik</h2>
+                <button onClick={copyToClipboard} className="bg-gray-100 text-black border-black border rounded-xl py-2 px-3">Kopiuj tekst w formacie markdown</button>
+            </div>
+            <code>
                 <ReactMarkdown>{generatedOutput}</ReactMarkdown>
-            </div>}
+            </code>
+        </div>}
     </>;
 }

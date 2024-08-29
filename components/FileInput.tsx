@@ -5,7 +5,6 @@ import toWav from "audiobuffer-to-wav";
 export default ({onTranscription}: { onTranscription: (data: string) => void }) => {
     const [ file, setFile ] = useState<File | null>(null);
     const [ loading, setLoading ] = useState<boolean>(false);
-    const [ visible, setVisible ] = useState<boolean>(true);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if ( e.target.files ) {
@@ -13,8 +12,7 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
         }
     };
 
-    const handleConvert = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleConvert = async () => {
         setLoading(true);
 
         const audioContext = new AudioContext();
@@ -33,15 +31,16 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
         const data = await response.json();
 
         setLoading(false);
-        setVisible(false);
 
         onTranscription(data.result);
     };
 
-    return <div className="max-w-sm z-10">
-        {visible && <form onSubmit={handleConvert} className="flex flex-col items-center">
+    return <div className="container z-10 flex flex-row justify-between items-center gap-12">
+        <div className="grid grid-cols-3 gap-y-4 place-items-center">
+            <div className="place-self-start">Wybierz plik dźwiękowy</div>
+            <div/>
+            <div className="place-self-start">Wpisz tekst ręcznie</div>
             <label className="block">
-                <span className="sr-only">Wybierz plik dźwiękowy</span>
                 <input type="file" onChange={handleFileChange} className="block w-full text-sm text-gray-500 pointer-events-auto
                             file:me-4 file:py-2 file:px-4
                             file:rounded-lg file:border-0
@@ -54,9 +53,16 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
                             dark:hover:file:bg-blue-400
                           "/>
             </label>
-            <button type="submit" disabled={loading} className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white">
+            <div className="text-2xl">Lub</div>
+            <button className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white"
+                    onClick={() => onTranscription("")}>Przejdź do edytora
+            </button>
+            <button onClick={handleConvert} disabled={loading}
+                    className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white">
                 Rozpocznij konwersję
             </button>
-        </form>}
+            <div />
+            <div />
+        </div>
     </div>;
 }
