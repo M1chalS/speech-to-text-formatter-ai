@@ -1,9 +1,9 @@
 'use client';
 import { ChangeEvent, useState } from "react";
 import toWav from "audiobuffer-to-wav";
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { getLang } from "@/lang/lang";
+import ProgressIndicator from "@/components/ProgressIndicator";
 const langFile = require(`@/lang/${getLang()}.js`).default;
 
 export default ({onTranscription}: { onTranscription: (data: string) => void }) => {
@@ -41,11 +41,9 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
     };
 
     return <div className="container z-10 flex flex-row justify-between items-center gap-12 md:mt-0 mt-12">
-        {loading && <div className="fixed inset-0 w-screen h-screen grid place-items-center z-20 bg-gray-300/20">
-            <CircularProgressbar value={50} text={`${50}%`} className="w-64 h-64"/>
-        </div>}
+        {loading && <ProgressIndicator />}
         <div className="grid md:grid-cols-3 grid-cols-1 md:gap-y-0 gap-y-12  place-items-center">
-            <div className="flex flex-col md:gap-y-4 gap-y-2">
+            <div className="flex flex-col items-center md:gap-y-4 gap-y-2">
                 <div className="place-self-start">{langFile.select_sound_file}</div>
                 <label className="block">
                     <input type="file" onChange={handleFileChange} className="block w-full text-sm text-gray-500 pointer-events-auto
