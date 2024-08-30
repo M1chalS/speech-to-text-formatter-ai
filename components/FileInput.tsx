@@ -3,6 +3,8 @@ import { ChangeEvent, useState } from "react";
 import toWav from "audiobuffer-to-wav";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { getLang } from "@/lang/lang";
+const langFile = require(`@/lang/${getLang()}.js`).default;
 
 export default ({onTranscription}: { onTranscription: (data: string) => void }) => {
     const [ file, setFile ] = useState<File | null>(null);
@@ -27,6 +29,7 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
             body: wav,
             headers: {
                 "Content-Type": "file/*",
+                "Accept-Language": getLang(),
             },
         });
 
@@ -43,7 +46,7 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
         </div>}
         <div className="grid md:grid-cols-3 grid-cols-1 md:gap-y-0 gap-y-12  place-items-center">
             <div className="flex flex-col md:gap-y-4 gap-y-2">
-                <div className="place-self-start">Wybierz plik dźwiękowy</div>
+                <div className="place-self-start">{langFile.select_sound_file}</div>
                 <label className="block">
                     <input type="file" onChange={handleFileChange} className="block w-full text-sm text-gray-500 pointer-events-auto
                             file:me-4 file:py-2 file:px-4
@@ -61,18 +64,18 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
                 </label>
                 <button onClick={handleConvert} disabled={loading}
                         className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white self-center">
-                    Rozpocznij konwersję
+                    {langFile.start_converting}
                 </button>
             </div>
             <div>
                 <div/>
-                <div className="text-2xl">Lub</div>
+                <div className="text-2xl">{langFile.or}</div>
                 <div/>
             </div>
             <div className="flex flex-col md:gap-y-4 gap-y-1 items-center">
-                <div className="place-self-start">Wpisz tekst ręcznie</div>
+                <div className="place-self-start">{langFile.enter_by_hand}</div>
                 <button className="mt-12 bg-green-600 rounded-md px-3 py-2 text-white"
-                        onClick={() => onTranscription("")}>Przejdź do edytora
+                        onClick={() => onTranscription("")}>{langFile.go_to_editor}
                 </button>
                 <div/>
             </div>

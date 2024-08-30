@@ -1,6 +1,8 @@
 'use client';
 import FileInput from "@/components/FileInput";
 import { useState } from "react";
+import { getLang } from "@/lang/lang";
+const langFile = require(`@/lang/${getLang()}.js`).default;
 
 export default ({onFormat}: { onFormat: (input: string) => void }) => {
     const [ transcription, setTranscription ] = useState<string>("");
@@ -21,12 +23,12 @@ export default ({onFormat}: { onFormat: (input: string) => void }) => {
             <FileInput onTranscription={handleTranscription}/>
         </div></div>}
         {!visible && <div className="w-full md:flex flex-col items-center mb-12">
-            <p className="mb-2 self-start">Tekst:</p>
+            <p className="mb-2 self-start">{langFile.text}:</p>
             <textarea className="font-mono w-full h-64 dark:text-black p-4 rounded-md dark:bg-gray-300"
                       onChange={(e) => setTranscription(e.target.value)} value={transcription}/>
             <div className="grid place-items-center">
                 <button className="mt-6 bg-green-600 rounded-md px-4 py-3 text-white text-xl"
-                        onClick={handleFormat}>Formatuj
+                        onClick={handleFormat}>{langFile.format}
                 </button>
             </div>
         </div>}

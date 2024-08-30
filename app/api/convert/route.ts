@@ -20,9 +20,17 @@ export async function POST(req: NextRequest) {
         content: Buffer.from(buf).toString("base64"),
     }
 
+    let lang = req.headers.get("Accept-Language") || "pl-PL";
+
+    if(lang === "pl") {
+        lang = "pl-PL";
+    } else {
+        lang = "en-US";
+    }
+
     const config = {
         encoding: AudioEncoding.LINEAR16,
-        languageCode: "pl-PL",
+        languageCode: lang,
     }
 
     const request = {
