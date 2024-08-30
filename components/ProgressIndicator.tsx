@@ -1,3 +1,4 @@
+'use client';
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useEffect, useState } from "react";
 
