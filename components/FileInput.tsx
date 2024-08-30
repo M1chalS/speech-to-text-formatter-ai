@@ -57,7 +57,6 @@ export default ({onTranscription}: { onTranscription: (data: string) => void }) 
                             dark:file:bg-blue-500
                             dark:hover:file:bg-blue-400
                           "
-                           accept={"audio/*"}
                     />
                 </label>
                 <button onClick={handleConvert} disabled={loading}
