@@ -50,7 +50,7 @@ export default () => {
                         tekst w formacie markdown
                     </button>
                 </div>
-                <div className="p-4 bg-white border-black border w-full font-mono rounded-lg">
+                <div className="p-4 bg-white border-black border w-full font-mono rounded-lg dark:text-black dark:bg-gray-300">
                     <ReactMarkdown>{generatedOutput}</ReactMarkdown>
                 </div>
             </div>}

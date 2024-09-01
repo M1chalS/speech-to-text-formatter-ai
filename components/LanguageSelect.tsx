@@ -24,7 +24,7 @@ export default () => {
 
     return (
         <div className="fixed top-2 right-2">
-            <select value={language} onChange={handleSelectLanguage}>
+            <select value={language} onChange={handleSelectLanguage} className="dark:text-black dark:bg-gray-300">
                 <option value="pl">PL</option>
                 <option value="en">EN</option>
             </select>

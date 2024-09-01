@@ -24,7 +24,7 @@ export default ({onFormat}: { onFormat: (input: string) => void }) => {
         </div></div>}
         {!visible && <div className="w-full mb-12 md:px-16 container mx-auto">
             <p className="mb-2 self-start text-xl">{langFile.text}:</p>
-            <textarea className="bg-white border-black border w-full h-64 dark:text-black p-4 rounded-md dark:bg-gray-300"
+            <textarea className="bg-white border-black border w-full h-64 dark:text-black dark:bg-gray-300 p-4 rounded-md"
                       onChange={(e) => setTranscription(e.target.value)} value={transcription}/>
             <div className="grid place-items-center">
                 <button className="mt-6 bg-green-600 rounded-md px-4 py-3 text-white text-xl"
